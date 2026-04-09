@@ -1,0 +1,88 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile and settings",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "User ID" },
+        "email": { "type": "string", "description": "User email" },
+        "displayName": { "type": "string", "description": "User display name" },
+        "photoURL": { "type": "string", "description": "User photo URL" },
+        "role": { "type": "string", "enum": ["admin", "user"], "description": "User role" },
+        "selectedModel": { "type": "string", "description": "Currently selected model" },
+        "apiKeys": { 
+          "type": "object", 
+          "description": "User's API keys for different providers",
+          "properties": {
+            "openai": { "type": "string" },
+            "anthropic": { "type": "string" },
+            "azure": { "type": "string" }
+          }
+        },
+        "createdAt": { "type": "timestamp", "description": "Creation timestamp" },
+        "updatedAt": { "type": "timestamp", "description": "Last update timestamp" }
+      },
+      "required": ["uid", "email", "createdAt"]
+    },
+    "Topic": {
+      "title": "Topic",
+      "description": "A topic in the knowledge base",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Topic ID" },
+        "userId": { "type": "string", "description": "Owner of the topic" },
+        "title": { "type": "string", "description": "Title of the topic" },
+        "content": { "type": "string", "description": "Content of the topic" },
+        "createdAt": { "type": "timestamp", "description": "Creation timestamp" },
+        "updatedAt": { "type": "timestamp", "description": "Last update timestamp" }
+      },
+      "required": ["id", "userId", "title", "content", "createdAt"]
+    },
+    "Chat": {
+      "title": "Chat",
+      "description": "A chat session",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Chat ID" },
+        "userId": { "type": "string", "description": "Owner of the chat" },
+        "title": { "type": "string", "description": "Title of the chat" },
+        "createdAt": { "type": "timestamp", "description": "Creation timestamp" },
+        "updatedAt": { "type": "timestamp", "description": "Last update timestamp" }
+      },
+      "required": ["id", "userId", "title", "createdAt"]
+    },
+    "Message": {
+      "title": "Message",
+      "description": "A message in a chat session",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Message ID" },
+        "chatId": { "type": "string", "description": "ID of the chat this message belongs to" },
+        "userId": { "type": "string", "description": "Owner of the message" },
+        "role": { "type": "string", "description": "Role of the sender (user or model)" },
+        "content": { "type": "string", "description": "Content of the message" },
+        "createdAt": { "type": "timestamp", "description": "Creation timestamp" }
+      },
+      "required": ["id", "chatId", "userId", "role", "content", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/User" },
+      "description": "User profiles and settings"
+    },
+    "/topics/{topicId}": {
+      "schema": { "$ref": "#/entities/Topic" },
+      "description": "Knowledge base topics"
+    },
+    "/chats/{chatId}": {
+      "schema": { "$ref": "#/entities/Chat" },
+      "description": "Chat sessions"
+    },
+    "/messages/{messageId}": {
+      "schema": { "$ref": "#/entities/Message" },
+      "description": "Messages within chat sessions"
+    }
+  }
+}
