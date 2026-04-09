@@ -1,0 +1,5 @@
+{
+  "name": "EduChat - Storytelling AI",
+  "description": "An educational chatbot that explains topics through interactive storytelling, strictly adhering to a provided knowledge base.",
+  "requestFramePermissions": []
+}
